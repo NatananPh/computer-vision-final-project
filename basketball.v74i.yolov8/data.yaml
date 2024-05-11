@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 3
+names: ['ball', 'basket', 'goal']
+
+roboflow:
+  workspace: zaki-b86c6
+  project: basketball-jagmz
+  version: 74
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/zaki-b86c6/basketball-jagmz/dataset/74
