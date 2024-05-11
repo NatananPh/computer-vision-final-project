@@ -24,7 +24,7 @@ class ShotDetector:
         # self.cap = cv2.VideoCapture(0)
 
         # Use video - replace text with your video path
-        self.cap = cv2.VideoCapture("sample/one_score_one_miss.mp4")
+        self.cap = cv2.VideoCapture("sample/multi_angle.mp4")
 
         self.ball_pos = (
             []
@@ -34,7 +34,7 @@ class ShotDetector:
         )  # array of tuples ((x_pos, y_pos), frame count, width, height, conf)
 
         self.frame_count = 0
-        self.frame = None
+        self.frame = 60
 
         self.makes = 0
         self.attempts = 0
@@ -46,7 +46,7 @@ class ShotDetector:
         self.down_frame = 0
 
         # Used for green and red colors after make/miss
-        self.fade_frames = 20
+        self.fade_frames = 30
         self.fade_counter = 0
         self.overlay_color = (0, 0, 0)
 
@@ -81,9 +81,7 @@ class ShotDetector:
                     center = (int(x1 + w / 2), int(y1 + h / 2))
 
                     # Only create ball points if high confidence or near hoop
-                    if (
-                        conf > 0.3
-                        or (in_hoop_region(center, self.hoop_pos) and conf > 0.15)
+                    if (in_hoop_region(center, self.hoop_pos) and conf > 0.15
                     ) and current_class == "Basketball":
                         self.ball_pos.append((center, self.frame_count, w, h, conf))
                         cvzone.cornerRect(self.frame, (x1, y1, w, h))

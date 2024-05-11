@@ -87,10 +87,10 @@ def in_hoop_region(center, hoop_pos):
     x = center[0]
     y = center[1]
 
-    x1 = hoop_pos[-1][0][0] - 1 * hoop_pos[-1][2]
-    x2 = hoop_pos[-1][0][0] + 1 * hoop_pos[-1][2]
-    y1 = hoop_pos[-1][0][1] - 1 * hoop_pos[-1][3]
-    y2 = hoop_pos[-1][0][1] + 0.5 * hoop_pos[-1][3]
+    x1 = hoop_pos[-1][0][0] - 3 * hoop_pos[-1][2]
+    x2 = hoop_pos[-1][0][0] + 3 * hoop_pos[-1][2]
+    y1 = hoop_pos[-1][0][1] - 3 * hoop_pos[-1][3]
+    y2 = hoop_pos[-1][0][1] + 3 * hoop_pos[-1][3]
 
     if x1 < x < x2 and y1 < y < y2:
         return True
