@@ -1,9 +1,12 @@
-train: /Users/natananph/Documents/Chula/Year4Sem2/comp-vision/AI-Basketball-Shot-Detection-Tracker-master/dataset/train
-val: /Users/natananph/Documents/Chula/Year4Sem2/comp-vision/AI-Basketball-Shot-Detection-Tracker-master/dataset/valid
-test: /Users/natananph/Documents/Chula/Year4Sem2/comp-vision/AI-Basketball-Shot-Detection-Tracker-master/dataset/test
+train: C:/Users/Nut/Chula/Year4Sem2/comp-vision/computer-vision-final-project/basketball.v74i.yolov8/train
+val: C:/Users/Nut/Chula/Year4Sem2/comp-vision/computer-vision-final-project/basketball.v74i.yolov8/valid
+test: C:/Users/Nut/Chula/Year4Sem2/comp-vision/computer-vision-final-project/basketball.v74i.yolov8/test
 
 # replace '...' with your local absolute paths
 # download the dataset used here: https://universe.roboflow.com/034-ganesh-kumar-m-v-cs-r2lwe/basketball-lhqoe/dataset/1
 
-nc: 2
-names: ['Basketball', 'Basketball Hoop']
+# nc: 2
+# names: ['Basketball', 'Basketball Hoop']
+
+nc: 3
+names: ['ball', 'basket', 'goal']
