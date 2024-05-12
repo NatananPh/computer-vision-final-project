@@ -17,14 +17,14 @@ from utils import (
 class ShotDetector:
     def __init__(self):
         # Load the YOLO model created from main.py - change text to your relative path
-        self.model = YOLO("best.pt")
-        self.class_names = ["Basketball", "Basketball Hoop"]
+        self.model = YOLO("/Users/sorawitthanitthapongsa/Desktop/Year4/SS/Comp-vision/project/final_project/computer-vision-final-project/runs/detect/train4/weights/best.pt")
+        self.class_names = ["Basketball", "Basketball Hoop","Goal"]
 
         # Uncomment line below to use webcam (I streamed to my iPhone using Iriun Webcam)
         # self.cap = cv2.VideoCapture(0)
 
         # Use video - replace text with your video path
-        self.cap = cv2.VideoCapture("sample/one_score_one_miss.mp4")
+        self.cap = cv2.VideoCapture("sample/multi_angle.mp4")
 
         self.ball_pos = (
             []

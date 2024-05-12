@@ -1,6 +1,6 @@
-train: C:/Users/Nut/Chula/Year4Sem2/comp-vision/computer-vision-final-project/basketball.v74i.yolov8/train
-val: C:/Users/Nut/Chula/Year4Sem2/comp-vision/computer-vision-final-project/basketball.v74i.yolov8/valid
-test: C:/Users/Nut/Chula/Year4Sem2/comp-vision/computer-vision-final-project/basketball.v74i.yolov8/test
+train: /Users/sorawitthanitthapongsa/Desktop/Year4/SS/Comp-vision/project/final_project/computer-vision-final-project/basketball.v74i.yolov8/train
+val: /Users/sorawitthanitthapongsa/Desktop/Year4/SS/Comp-vision/project/final_project/computer-vision-final-project/basketball.v74i.yolov8/valid
+test: /Users/sorawitthanitthapongsa/Desktop/Year4/SS/Comp-vision/project/final_project/computer-vision-final-project/basketball.v74i.yolov8/test
 
 # replace '...' with your local absolute paths
 # download the dataset used here: https://universe.roboflow.com/034-ganesh-kumar-m-v-cs-r2lwe/basketball-lhqoe/dataset/1
