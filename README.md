@@ -7,7 +7,15 @@ This repository is for 2110433 Computer Vision course Final Project
 To install run:
 
 ```bash
-pip install -r requirements.txt
+$ pip install -r requirements.txt
+```
+
+### Train
+
+You can train YOLOv8 by running the following:
+
+```bash
+$ python main.py
 ```
 
 ### Inference

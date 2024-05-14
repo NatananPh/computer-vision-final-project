@@ -26,11 +26,12 @@ def parse_opt():
 
 
 class ShotDetector:
-    def __init__(self, video_path="", view_image=False, save_video=False):
-        self.video_path = video_path if video_path else 0
+    def __init__(self, video_path, view_image=False, save_video=False):
+        self.video_path = video_path
         self.view_image = view_image
         self.save_video = save_video
 
+        # video_path = 0 to use webcam (streamed on iPhone using Iriun Webcam)
         if self.video_path != 0:
             if '/' in self.video_path:
                 self.output_vdo_name = f"{self.video_path.split('/')[-1].split('.')[0]}"
@@ -49,7 +50,6 @@ class ShotDetector:
         self.model = YOLO("best.pt")
         self.class_names = ["Basketball", "Basketball Hoop"]
 
-        # video_path = 0 to use webcam (I streamed to my iPhone using Iriun Webcam)
         # Use video - replace text with your video path
         self.cap = cv2.VideoCapture(self.video_path)
 
@@ -208,7 +208,7 @@ if __name__ == "__main__":
     save_video = opt.save_video
 
     # Get video source path (0 for webcam)
-    if opt.source == None:
+    if opt.source == None or opt.source == '0':
         video_path = 0
     else:
         video_path = opt.source
