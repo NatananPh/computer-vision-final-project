@@ -191,7 +191,7 @@ class ShotDetector:
         if self.save_video:
             video_file = open(self.output_path, 'rb')
             video_bytes = video_file.read()
-            placeholder.video(video_bytes, subtitles=self.output_path, loop=True)
+            placeholder.video(video_bytes, loop=True)
 
 
     # Clean and display ball motion
