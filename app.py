@@ -23,8 +23,8 @@ def validate_file_path(file_path):
 
 
 def video_input(data_source):
+    video_path = "./sample/two_score_two_miss.mp4"
     if data_source == 'Sample data':
-        video_path = "./sample/two_score_two_miss.mp4"
         return video_path
     else:
         uploaded_file = st.sidebar.file_uploader("Choose a video", type=['mp4', 'mpv', 'avi'])
@@ -35,8 +35,10 @@ def video_input(data_source):
             with open(f'./sample/{uploaded_file.name}', 'wb') as file:
                 file.write(uploaded_file.read())
 
-        # path to saved file
-        return f'./sample/{uploaded_file.name}'
+            # path to saved file
+            return f'./sample/{uploaded_file.name}'
+        else:
+            return video_path
 
 
 class ShotDetector:
