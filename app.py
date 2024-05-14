@@ -19,7 +19,7 @@ from utils import (
 
 
 def validate_file_path(file_path):
-    return exists(f"./sample/{file_path}")
+    return exists(file_path)
 
 
 def video_input(data_source):
