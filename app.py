@@ -24,7 +24,7 @@ def validate_file_path(file_path):
 
 def video_input(data_source):
     if data_source == 'Sample data':
-        video_path = "/sample/two_score_two_miss.mp4"
+        video_path = "./sample/two_score_two_miss.mp4"
         return video_path
     else:
         uploaded_file = st.sidebar.file_uploader("Choose a video", type=['mp4', 'mpv', 'avi'])
