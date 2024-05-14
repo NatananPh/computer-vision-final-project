@@ -22,7 +22,7 @@ $ python main.py
 
 You can run YOLOv8 basketball detection by running the following:
 
-```bash
+```
 $ python shot_detector.py --help
 usage: shot_detector.py [-h] [-s SOURCE] [-vi] [-sv]    
 
@@ -31,6 +31,12 @@ options:
   -s SOURCE, --source SOURCE  video/0 for webcam
   -vi, --view-img             display results
   -sv, --save-video           save video result
+```
+
+You can run a web interface for real-time yolo inference using streamlit by running the following:
+
+```
+$ streamlit run app.py
 ```
 
 #### Example
