@@ -4,6 +4,7 @@ import cvzone
 import argparse
 import numpy as np
 import streamlit as st
+from os.path import exists
 
 from ultralytics import YOLO
 from utils import (
@@ -17,23 +18,32 @@ from utils import (
 )
 
 
-def video_input():
-    uploaded_file = st.sidebar.file_uploader("Choose a video", type=['mp4', 'mpv', 'avi'])
+def validate_file_path(file_path):
+    return exists(f"./sample/{file_path}")
 
-    # To read file as bytes:
-    if uploaded_file is not None:
-        st.write("filename:", uploaded_file.name)
-        with open(f'./sample/{uploaded_file.name}', 'wb') as file:
-            file.write(uploaded_file.read())
 
-    # path to saved file
-    return f'./sample/{uploaded_file.name}'
+def video_input(data_source):
+    if data_source == 'Sample data':
+        video_path = "/sample/two_score_two_miss.mp4"
+        return video_path
+    else:
+        uploaded_file = st.sidebar.file_uploader("Choose a video", type=['mp4', 'mpv', 'avi'])
+
+        # To read file as bytes:
+        if uploaded_file is not None:
+            st.write("filename:", uploaded_file.name)
+            with open(f'./sample/{uploaded_file.name}', 'wb') as file:
+                file.write(uploaded_file.read())
+
+        # path to saved file
+        return f'./sample/{uploaded_file.name}'
 
 
 class ShotDetector:
-    def __init__(self, video_path, save_video=False):
+    def __init__(self, video_path, confidence=0.15, save_video=False):
         self.video_path = video_path
         self.save_video = save_video
+        self.confidence = confidence
 
         # video_path = 0 to use webcam (streamed on iPhone using Iriun Webcam)
         if self.video_path != 0:
@@ -79,7 +89,12 @@ class ShotDetector:
         self.fade_counter = 0
         self.overlay_color = (0, 0, 0)
 
-        self.run()
+        # run if file is in dir
+        if validate_file_path(self.video_path):
+            print(f"Found {self.video_path}")
+            self.run()
+        else:
+            st.write(f"{self.video_path} NOT found")
 
 
     def run(self):
@@ -127,7 +142,7 @@ class ShotDetector:
                     center = (int(x1 + w / 2), int(y1 + h / 2))
 
                     # Only create ball points if high confidence or near hoop
-                    if (in_hoop_region(center, self.hoop_pos) and conf > 0.15) and \
+                    if (in_hoop_region(center, self.hoop_pos) and conf > self.confidence) and \
                         current_class == "Basketball":
                         self.ball_pos.append((center, self.frame_count, w, h, conf))
                         cvzone.cornerRect(self.frame, (x1, y1, w, h))
@@ -147,10 +162,10 @@ class ShotDetector:
                 self.output_writer.write(self.frame)
             
             # Stream results
-            output.image(self.frame)
-            st1_text.markdown(f"**{self.frame_count}**")
-            st2_text.markdown(f"**{self.makes}**")
-            st3_text.markdown(f"**{self.attempts}**")
+            output.image(self.frame[:, :, ::-1])
+            st1_text.markdown(f"### **{self.frame_count}**")
+            st2_text.markdown(f"### **{self.makes}**")
+            st3_text.markdown(f"### **{self.attempts}**")
         
         if self.save_video:
             self.output_writer.release()
@@ -216,7 +231,12 @@ class ShotDetector:
 
 if __name__ == "__main__":
     st.title("Basketball Detection Dashboard")
-    save_video = st.checkbox("save video output", value=False)
+    st.sidebar.title("Settings")
 
-    upload_file = video_input()
-    ShotDetector(upload_file, save_video=save_video)
+    # confidence slider
+    confidence = st.sidebar.slider('Confidence', min_value=0.1, max_value=1.0, value=.15)
+
+    save_video = st.sidebar.checkbox("Save video output", value=False)
+    data_source = st.sidebar.radio("Select input source: ", ['Sample data', 'Upload your own data'])
+    upload_file = video_input(data_source)
+    ShotDetector(upload_file, confidence=confidence, save_video=save_video)
