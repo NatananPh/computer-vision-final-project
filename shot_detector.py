@@ -40,11 +40,12 @@ class ShotDetector:
         else:
             self.output_vdo_name = f"webcam"
 
-        self.output_writer = cv2.VideoWriter(
-            f"./sample/{self.output_vdo_name}_result.mp4",
-            cv2.VideoWriter_fourcc(*'mp4v'), 
-            60, (640, 640)
-        )
+        if self.save_video:
+            self.output_writer = cv2.VideoWriter(
+                f"./sample/{self.output_vdo_name}_result.mp4",
+                cv2.VideoWriter_fourcc(*'mp4v'), 
+                60, (640, 640)
+            )
 
         # Load the YOLO model created from main.py - change text to your relative path
         self.model = YOLO("best.pt")
@@ -80,12 +81,12 @@ class ShotDetector:
     def run(self):
         while True:
             success, self.frame = self.cap.read()
-            self.frame = resize_with_pad(self.frame, (640, 640))
 
             # End of the video or an error occurred
             if not success:
                 break
 
+            self.frame = resize_with_pad(self.frame, (640, 640))
             results = self.model(self.frame, stream=True)
 
             for r in results:
@@ -135,10 +136,11 @@ class ShotDetector:
                 if cv2.waitKey(1) & 0xFF == ord("q"):  
                     break
         
-        self.output_writer.release()
+        if self.save_video:
+            self.output_writer.release()
         self.cap.release()
         cv2.destroyAllWindows()
-        print("Finish Detection" + f"in ./sample/{self.output_vdo_name}_result.mp4" if self.save_video else "..")
+        print(f"Finish Detection in ./sample/{self.output_vdo_name}_result.mp4" if self.save_video else "Finish Detection..")
 
 
     # Clean and display ball motion
