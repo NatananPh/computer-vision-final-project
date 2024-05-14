@@ -2,6 +2,7 @@ import math
 import cv2
 import cvzone
 import argparse
+import subprocess
 import numpy as np
 import streamlit as st
 from os.path import exists
@@ -24,7 +25,9 @@ def validate_file_path(file_path):
 
 def video_input(data_source):
     video_path = "./sample/two_score_two_miss.mp4"
-    if data_source == 'Sample data':
+    if data_source == 'Webcam':
+        return 0
+    elif data_source == 'Sample video':
         return video_path
     else:
         uploaded_file = st.sidebar.file_uploader("Choose a video", type=['mp4', 'mpv', 'avi'])
@@ -187,11 +190,19 @@ class ShotDetector:
         print(f"Finish Detection in {self.output_path}" \
               if self.save_video else "Finish Detection..")
 
-        # Play loop video
+        # Play video
         if self.save_video:
-            video_file = open(self.output_path, 'rb')
-            video_bytes = video_file.read()
-            placeholder.video(video_bytes)
+            try:
+                # https://discuss.streamlit.io/t/processing-video-with-opencv-and-write-it-to-disk-to-display-in-st-video/28891
+                # The MIME type error comes from the “mp4v” codec as MPEG-4 is not supported by streamlit’s html5 web player
+                converted_vdo = f"./sample/{self.output_vdo_name}_result_h264.mp4"
+                subprocess.call(args=f"ffmpeg -y -i {self.output_path} -c:v libx264 {converted_vdo}".split(" "))
+
+                video_file = open(converted_vdo, 'rb')
+                video_bytes = video_file.read()
+                placeholder.video(video_bytes)
+            except:
+                print("Error occurs in re-encoding to h264 using ffmpeg")
 
 
     # Clean and display ball motion
@@ -259,7 +270,7 @@ if __name__ == "__main__":
     hoop_conf = st.sidebar.slider('Basketball Hoop Confidence', min_value=0.1, max_value=1.0, value=0.3)
 
     save_video = st.sidebar.checkbox("Save video output", value=True)
-    data_source = st.sidebar.radio("Select input source: ", ['Sample data', 'Upload your own data'])
+    data_source = st.sidebar.radio("Select input source: ", ['Sample video', 'Webcam', 'Upload your own video'])
     upload_file = video_input(data_source)
 
     if st.sidebar.button("Detect", type="primary"):
