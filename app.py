@@ -258,7 +258,7 @@ if __name__ == "__main__":
     ball_conf = st.sidebar.slider('Basketball Confidence', min_value=0.1, max_value=1.0, value=0.15)
     hoop_conf = st.sidebar.slider('Basketball Hoop Confidence', min_value=0.1, max_value=1.0, value=0.3)
 
-    save_video = st.sidebar.checkbox("Save video output", value=False)
+    save_video = st.sidebar.checkbox("Save video output", value=True)
     data_source = st.sidebar.radio("Select input source: ", ['Sample data', 'Upload your own data'])
     upload_file = video_input(data_source)
 
