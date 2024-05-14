@@ -16,7 +16,7 @@ You can run YOLOv8 basketball detection by running the following:
 
 ```bash
 $ python shot_detector.py --help
-usage: shot_detector.py [-h] [-s SOURCE] [-vi] [-v]    
+usage: shot_detector.py [-h] [-s SOURCE] [-vi] [-sv]    
 
 options:
   -h, --help                  show this help message and exit
