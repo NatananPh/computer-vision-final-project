@@ -38,10 +38,10 @@ class ShotDetector:
             else:
                 self.output_vdo_name = self.video_path.split('.')[0]
         else:
-            self.output_vdo_name = f"webcam_result"
+            self.output_vdo_name = f"webcam"
 
         self.output_writer = cv2.VideoWriter(
-            f"./sample/{self.output_vdo_name}.mp4",
+            f"./sample/{self.output_vdo_name}_result.mp4",
             cv2.VideoWriter_fourcc(*'mp4v'), 
             60, (640, 640)
         )
