@@ -42,10 +42,17 @@ def video_input(data_source):
 
 
 class ShotDetector:
-    def __init__(self, video_path, confidence=0.15, save_video=False):
+    def __init__(
+        self, 
+        video_path, 
+        ball_conf=0.15, 
+        hoop_conf=0.3, 
+        save_video=False
+    ):
         self.video_path = video_path
         self.save_video = save_video
-        self.confidence = confidence
+        self.ball_conf = ball_conf
+        self.hoop_conf = hoop_conf
 
         # video_path = 0 to use webcam (streamed on iPhone using Iriun Webcam)
         if self.video_path != 0:
@@ -55,10 +62,11 @@ class ShotDetector:
                 self.output_vdo_name = self.video_path.split('.')[0]
         else:
             self.output_vdo_name = f"webcam"
+        self.output_path = f"./sample/{self.output_vdo_name}_result.mp4"
 
         if self.save_video:
             self.output_writer = cv2.VideoWriter(
-                f"./sample/{self.output_vdo_name}_result.mp4",
+                self.output_path,
                 cv2.VideoWriter_fourcc(*'mp4v'), 
                 60, (640, 640)
             )
@@ -91,12 +99,12 @@ class ShotDetector:
         self.fade_counter = 0
         self.overlay_color = (0, 0, 0)
 
-        # run if file is in dir
+        # Run if file path is valid
         if validate_file_path(self.video_path):
             print(f"Found {self.video_path}")
             self.run()
         else:
-            st.write(f"{self.video_path} NOT found")
+            print(f"{self.video_path} NOT found")
 
 
     def run(self):
@@ -144,13 +152,13 @@ class ShotDetector:
                     center = (int(x1 + w / 2), int(y1 + h / 2))
 
                     # Only create ball points if high confidence or near hoop
-                    if (in_hoop_region(center, self.hoop_pos) and conf > self.confidence) and \
+                    if (in_hoop_region(center, self.hoop_pos) and conf > self.ball_conf) and \
                         current_class == "Basketball":
                         self.ball_pos.append((center, self.frame_count, w, h, conf))
                         cvzone.cornerRect(self.frame, (x1, y1, w, h))
 
                     # Create hoop points if high confidence
-                    if conf > 0.3 and current_class == "Basketball Hoop":
+                    if conf > self.hoop_conf and current_class == "Basketball Hoop":
                         self.hoop_pos.append((center, self.frame_count, w, h, conf))
                         cvzone.cornerRect(self.frame, (x1, y1, w, h))
 
@@ -176,7 +184,13 @@ class ShotDetector:
 
         # Clear all those elements:
         placeholder.empty()
-        print(f"Finish Detection in ./sample/{self.output_vdo_name}_result.mp4" if self.save_video else "Finish Detection..")
+        print(f"Finish Detection in {self.output_path}" \
+              if self.save_video else "Finish Detection..")
+
+        # Play loop video
+        video_file = open(self.output_path, 'rb')
+        video_bytes = video_file.read()
+        placeholder.video(video_bytes, subtitles=self.output_path, loop=True)
 
 
     # Clean and display ball motion
@@ -240,10 +254,12 @@ if __name__ == "__main__":
     st.sidebar.title("Settings")
 
     # confidence slider
-    confidence = st.sidebar.slider('Confidence', min_value=0.1, max_value=1.0, value=.15)
+    ball_conf = st.sidebar.slider('Basketball Confidence', min_value=0.1, max_value=1.0, value=0.15)
+    hoop_conf = st.sidebar.slider('Basketball Hoop Confidence', min_value=0.1, max_value=1.0, value=0.3)
 
     save_video = st.sidebar.checkbox("Save video output", value=False)
     data_source = st.sidebar.radio("Select input source: ", ['Sample data', 'Upload your own data'])
     upload_file = video_input(data_source)
+
     if st.sidebar.button("Detect", type="primary"):
-        ShotDetector(upload_file, confidence=confidence, save_video=save_video)
+        ShotDetector(upload_file, ball_conf=ball_conf, hoop_conf=hoop_conf, save_video=save_video)
