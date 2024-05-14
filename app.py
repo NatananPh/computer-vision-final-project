@@ -112,7 +112,7 @@ class ShotDetector:
             st3_text = st.markdown(f"{0}")
 
         st.markdown("---")
-        output = st.empty()
+        placeholder = st.empty()
 
         while True:
             success, self.frame = self.cap.read()
@@ -164,14 +164,18 @@ class ShotDetector:
                 self.output_writer.write(self.frame)
             
             # Stream results
-            output.image(self.frame[:, :, ::-1])
+            placeholder.image(self.frame[:, :, ::-1])
             st1_text.markdown(f"### **{self.frame_count}**")
             st2_text.markdown(f"### **{self.makes}**")
             st3_text.markdown(f"### **{self.attempts}**")
         
+        # Save video result
         if self.save_video:
             self.output_writer.release()
         self.cap.release()
+
+        # Clear all those elements:
+        placeholder.empty()
         print(f"Finish Detection in ./sample/{self.output_vdo_name}_result.mp4" if self.save_video else "Finish Detection..")
 
 
@@ -241,4 +245,5 @@ if __name__ == "__main__":
     save_video = st.sidebar.checkbox("Save video output", value=False)
     data_source = st.sidebar.radio("Select input source: ", ['Sample data', 'Upload your own data'])
     upload_file = video_input(data_source)
-    ShotDetector(upload_file, confidence=confidence, save_video=save_video)
+    if st.sidebar.button("Detect", type="primary"):
+        ShotDetector(upload_file, confidence=confidence, save_video=save_video)
