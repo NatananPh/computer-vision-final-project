@@ -138,7 +138,7 @@ class ShotDetector:
         self.output_writer.release()
         self.cap.release()
         cv2.destroyAllWindows()
-        print("Finish Detection" + f"in ./sample/{self.output_vdo_name}.mp4" if self.save_video else "..")
+        print("Finish Detection" + f"in ./sample/{self.output_vdo_name}_result.mp4" if self.save_video else "..")
 
 
     # Clean and display ball motion
