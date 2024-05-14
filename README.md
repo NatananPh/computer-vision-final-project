@@ -33,12 +33,6 @@ options:
   -sv, --save-video           save video result
 ```
 
-You can run a web interface for real-time yolo inference using streamlit by running the following:
-
-```
-$ streamlit run app.py
-```
-
 #### Example
 
 ```bash
@@ -58,6 +52,11 @@ $ python shot_detector.py --source "/Path/to/Video" --save-video
 $ python shot_detector.py --source "sample/multi_angle.mp4" --view-img --save-video
 ```
 
+You can run a web interface for real-time YOLO inference using streamlit by running the following:
+
+```
+$ streamlit run app.py
+```
 
 ## Problem Statement
 
