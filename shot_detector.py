@@ -48,8 +48,8 @@ class ShotDetector:
             )
 
         # Load the YOLO model created from main.py - change text to your relative path
-        self.model = YOLO("best.pt")
-        self.class_names = ["Basketball", "Basketball Hoop"]
+        self.model = YOLO("runs/detect/train4/best.pt")
+        self.class_names = ["Basketball", "Basketball Hoop","Goal"]
 
         # Use video - replace text with your video path
         self.cap = cv2.VideoCapture(self.video_path)
